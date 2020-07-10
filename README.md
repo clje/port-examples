@@ -1,4 +1,4 @@
-# erlang-port-examples
+# clojerl-port-examples
 
 *A Clojerl/OTP application for running Port examples in various languages*
 
