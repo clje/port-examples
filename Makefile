@@ -25,7 +25,7 @@ clean-all: clean clean-cl clean-go
 #############################################################################
 
 build-proj:
-	@rebar3 compile
+	@rebar3 clojerl compile
 
 $(PROJ_BIN):
 	@echo '>> Building release ...'
