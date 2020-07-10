@@ -1,0 +1,14 @@
+{ application, 'ports'
+, [ {vsn, "0.1.0"}
+  , {registered, [ports]}
+  , {description, "A Clojerl application"}
+  , {modules, ['ports.echo']}
+  , { applications
+    , [ stdlib
+      , kernel
+      , clojerl
+      ]
+    }
+  , {mod, {'ports.app', []}}
+  ]
+}.

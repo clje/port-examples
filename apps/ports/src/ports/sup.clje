@@ -1,0 +1,42 @@
+(ns ports.sup)
+
+(def module :ports.sup)
+(def server module)
+(def max-restarts 3)
+(def restart-period-seconds 60)
+(def empty-args #erl())
+
+(def sup-flags #erl{:strategy  :one_for_one
+                    :intensity max-restarts
+                    :period    restart-period-seconds})
+
+(defn start-link 
+  []
+  (logger/warning "Starting port-examples supervisor ...")
+  (supervisor/start_link #erl[:local server]
+                         module
+                         empty-args))
+
+(defn stop 
+  []
+  ;; (go/stop)
+  ;; (lisp/stop)
+  (erlang/exit (erlang/self) :shutdown))
+
+(defn pid
+  []
+  (erlang/whereis module))
+
+(defn child
+  [mod]
+  #erl{:id mod
+       :start #erl[mod :start_link empty-args]
+       :restart :permanent
+       :shutdown 2000
+       :type :worker
+       :modules #erl(mod)})
+
+(defn init 
+  [_args]
+  #erl[:ok #erl[sup-flags #erl((child :ports.echo))]])
+

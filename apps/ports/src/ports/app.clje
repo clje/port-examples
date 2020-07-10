@@ -1,0 +1,26 @@
+(ns ports.app
+  (:require 
+   [ports.sup :as sup]))
+
+(def module :ports.sup)
+(def supervisor :ports.sup)
+(def empty-args #erl())
+
+(defn start 
+  [type args]
+  (logger/set_application_level :ports :all)
+  (logger/warning "Starting port-examples application ...")
+  (sup/start-link))
+
+(defn stop 
+  [state]
+  (sup/stop)
+  :ok)
+
+(defn pid
+  []
+  (erlang/whereis module))
+
+(defn supervisor 
+  []
+  (erlang/whereis supervisor))

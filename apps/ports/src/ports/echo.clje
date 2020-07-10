@@ -1,0 +1,66 @@
+(ns ports.echo
+ (:require 
+  [clojure.core]
+  [erlang.core]))
+ 
+ (erlang.core/behaviours gen_server)
+
+(def module :ports.echo)
+(def server module)
+(def empty-args #erl())
+
+(defn start_link
+  []
+  (logger/warning "Starting echo gen_server ...")
+  (gen_server/start_link #erl[:local server] module empty-args empty-args))
+
+(defn stop
+  []
+  (gen_server/call module :stop))
+
+(defn pid
+  []
+  (erlang/whereis module))
+
+(defn echo
+  [msg]
+  (gen_server/call module #erl[:echo msg]))
+
+(defn* init
+  ([]
+   (init []))
+  ([_args]
+   #erl[:ok :state]))
+
+(defn* handle_call
+  ([:stop _from state]
+    #erl[:stop :normal :ok state])
+  ([#erl[:echo msg] _from state]
+    #erl[:reply msg state]))
+
+(defn handle_cast
+  [_msg state]
+  #erl[:noreply state])
+
+(defn* handle_info
+  ([#erl[:EXIT _from :normal] state]
+   (logger/error "The Erlang echo server is exiting (normal)")
+   #erl[:noreply state])
+  ([#erl[:EXIT _from :shutdown] state]
+   (logger/error "The Erlang echo server is exiting (shutdown)")
+   #erl[:noreply state])
+  ([#erl[info state]]
+   (logger/error "The Erlang echo server is handling info '~p'" info)
+   #erl[:noreply state]))
+
+(defn* terminate
+ ([:normal _state]
+  (logger/error "The Erlang echo server is terminating"))
+ ([:shutdown _state]
+  (logger/error "The Erlang echo server is shutting down"))
+ ([reason _state]
+  (logger/error "The Erlang echo server is terminating (~p)" reason)))
+
+(defn code_change
+  [_old-version state _extra]
+  #erl[:ok state])
