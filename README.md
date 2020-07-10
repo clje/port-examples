@@ -5,6 +5,15 @@
 **WIP**: Once the release support is tuned in Clojerl (or its rebar3
 plugins/templates) the Go and Common Lisp servers will be added.
 
+## About
+
+This project is a [Clojerl](https://github.com/clojerl/clojerl) conversion of
+the Erlang project
+[erlsci/port-examples](https://github.com/erlsci/port-examples) which
+demonstrates communicating with applications written in other languages
+via the
+[Erlang ports](https://erlang.org/doc/reference_manual/ports.html) mechanism
+
 ## Dependencies & Setup
 
 This application assumes that the following are on your system:
