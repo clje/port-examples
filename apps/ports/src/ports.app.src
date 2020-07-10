@@ -6,7 +6,6 @@
   , { applications
     , [ stdlib
       , kernel
-      , clojerl
       ]
     }
   , {mod, {'ports.app', []}}

@@ -11,7 +11,7 @@ PWD = $(shell pwd)
 
 default: build
 
-build: build-proj build-cl build-go release
+build: build-cl build-go release
 
 clean:
 	@rebar3 clean
@@ -27,7 +27,7 @@ clean-all: clean clean-cl clean-go
 build-proj:
 	@rebar3 clojerl compile
 
-$(PROJ_BIN):
+$(PROJ_BIN): build-proj
 	@echo '>> Building release ...'
 	@rebar3 release
 
@@ -40,6 +40,12 @@ run: release
 	GOPATH=$(PWD)/apps/ports/priv/go \
 	CODE_LOADING_MODE=interactive \
 	$(PROJ_BIN) console
+
+# $(PROJ_BIN) console --eval "'clojure.main':main([<<\"-r\">>])"
+
+# $(PROJ_BIN) start;
+# @$(PROJ_BIN) eval "'clojure.main':main([<<\"-r\">>])";
+# @$(PROJ_BIN) attach;
 
 run-fresh: clean-all build run
 fresh-run: run-fresh
