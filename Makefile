@@ -36,7 +36,10 @@ release: | $(PROJ_BIN)
 run: release
 	@echo '>> Running application from distribution console ...'
 	@echo $(PROJ_BIN)
-	@GO111MODULE=on GOPATH=$(PWD)/apps/ports/priv/go $(PROJ_BIN) console
+	@GO111MODULE=on \
+	GOPATH=$(PWD)/apps/ports/priv/go \
+	CODE_LOADING_MODE=interactive \
+	$(PROJ_BIN) console
 
 run-fresh: clean-all build run
 fresh-run: run-fresh
